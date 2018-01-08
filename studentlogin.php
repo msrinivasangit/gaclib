@@ -27,6 +27,7 @@ foreach ($results as $result) {
 $_SESSION['alogin']=$result->member_id;
 $_SESSION['is_super_admin']=$result->is_super_admin;
 $_SESSION['is_staff']=$result->is_staff;
+$_SESSION['name']=$result->name;
 if($result->status==1)
 {
 echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
@@ -62,21 +63,27 @@ echo "<script>alert('Invalid Details');</script>";
     <!------MENU SECTION START-->
 <div class="navbar navbar-inverse set-radius-zero" >
         <div class="container">
-            <div class="navbar-header">
+            <div class="navbar-header">                
+                <a class="navbar-brand">
+                    <img src="assets/img/logo.gif" style="width:100%;height:auto;" />
+                </a>                 
+            </div>
+
+            <div class="left-div">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand">
-
-                    <img src="assets/img/logo.gif" style="width:85%;height:auto;" />
-                </a>
-
             </div>
+            <div class="right-div">
+                <a href="index.php" class="btn btn-danger pull-right">Home</a>
+            </div>              
         </div>
+        <center><div style="font-size: 28px;font-weight: bold;">GENERAL LIBRARY<br/>
+        ONLINE LIBRARY MANAGEMENT SYSTEM</div> </center>
     </div>
-    <!-- LOGO HEADER END-->
+<!-- LOGO HEADER END-->
 <!-- MENU SECTION END-->
 <div class="content-wrapper">
 <div class="container">
@@ -85,7 +92,7 @@ echo "<script>alert('Invalid Details');</script>";
 <h4 class="header-line">STUDENT LOGIN FORM</h4>
 </div>
 </div>
-             
+<?php include('includes/carousel.php');?>
 <!--LOGIN PANEL START-->           
 <div class="row">
 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" >
@@ -116,7 +123,11 @@ echo "<script>alert('Invalid Details');</script>";
 </div>
 </div>  
 <!---LOGIN PABNEL END-->            
-             
+           
+           <div class="row">
+    Government Arts College, Salem, is a general degree college located in Salem, Tamil Nadu. It was established in the year 1857. The college is affiliated with Periyar University. This college offers different courses in arts, commerce and science.
+</div>
+  
  
     </div>
     </div>

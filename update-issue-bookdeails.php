@@ -110,7 +110,7 @@ Issued Book Details
 <form role="form" method="post">
 <?php 
 $rid=intval($_GET['rid']);
-$sql = "SELECT tb_members.name,tb_books.title,tb_books.isbn,td_bookissue.fine,td_bookissue.return_status,td_bookissue.issue_date,td_bookissue.return_date,td_bookissue.id as rid from  td_bookissue join tb_members on tb_members.member_id=td_bookissue.member_id join tb_books on tb_books.book_id=td_bookissue.book_id where td_bookissue.id=:rid";
+$sql = "SELECT tb_members.name,tb_books.title,tb_books.isbn,tb_books.acc_number,td_bookissue.fine,td_bookissue.return_status,td_bookissue.issue_date,td_bookissue.return_date,td_bookissue.id as rid from  td_bookissue join tb_members on tb_members.member_id=td_bookissue.member_id join tb_books on tb_books.book_id=td_bookissue.book_id where td_bookissue.id=:rid";
 $query = $dbh -> prepare($sql);
 $query->bindParam(':rid',$rid,PDO::PARAM_STR);
 $query->execute();
@@ -126,19 +126,25 @@ foreach($results as $result)
 
 <div class="form-group">
 <label>Name :</label>
-<?php echo htmlentities($result->name);?>
+<?php echo ucwords(htmlentities($result->name));?>
 </div>
 
 <div class="form-group">
 <label>Book Name :</label>
-<?php echo htmlentities($result->title);?>
+<?php echo ucwords(htmlentities($result->title));?>
 </div>
 
-
+<!-- 
 <div class="form-group">
 <label>ISBN :</label>
-<?php echo htmlentities($result->isbn);?>
+<?php //echo htmlentities($result->isbn);?>
 </div>
+ -->
+<div class="form-group">
+<label>ACC Number :</label>
+<?php echo htmlentities($result->acc_number);?>
+</div>
+
 
 <div class="form-group">
 <label>Book Issued Date :</label>
@@ -150,7 +156,7 @@ foreach($results as $result)
 <label>Book Returned Date :</label>
 <?php if($result->return_date=="0000-00-00 00:00:00")
                                             {
-                                                echo htmlentities("Not Return Yet");
+                                                echo date("Y-m-d H:i:s");
                                             } else {
 
 

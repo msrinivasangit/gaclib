@@ -10,27 +10,35 @@ else{
 
 if(isset($_POST['update']))
 {
-$title=$_POST['title'];
-$author1=$_POST['author1'];
-$acc_number=$_POST['acc_number'];
-$publication=$_POST['publication'];
-$place_of_publication=$_POST['place_of_publication'];
+
+$title=addslashes($_POST['title']);
+$author1=addslashes($_POST['author1']);
+$acc_number=addslashes($_POST['acc_number']);
+$publication=addslashes($_POST['publication']);
+$place_of_publication=addslashes($_POST['place_of_publication']);
 $year_of_publication=$_POST['year_of_publication'];
+$department = $_POST['department'];
 $cost=$_POST['cost'];
+
+$department = $_POST['department'];
 $book_id=intval($_GET['book_id']);
 $sql="UPDATE tb_books SET 
-title = :title ,
-author1 = :author1 ,
-publication = :publication ,
-place_of_publication = :place_of_publication ,
-year_of_publication = :year_of_publication ,
-cost = :cost ,
-acc_number = :acc_number 
-WHERE book_id = :book_id";
+title = '".$title."' ,
+author1 = '".$author1."' ,
+publication = '".$publication."' ,
+place_of_publication = '".$place_of_publication."' ,
+year_of_publication = '".$year_of_publication."' ,
+cost = '".$cost."' ,
+acc_number = '".$acc_number."' ,
+department = '".$department."' 
+WHERE book_id = ".$book_id;
+
 $query = $dbh->prepare($sql);
+
 $query->bindParam(':title',$title,PDO::PARAM_STR);
 $query->bindParam(':author1',$author1,PDO::PARAM_STR);
 $query->bindParam(':acc_number',$acc_number,PDO::PARAM_STR);
+$query->bindParam(':department',$department,PDO::PARAM_STR);
 $query->bindParam(':cost',$cost,PDO::PARAM_STR);
 $query->bindParam(':publication',$publication,PDO::PARAM_STR);
 $query->bindParam(':place_of_publication',$place_of_publication,PDO::PARAM_STR);
@@ -39,8 +47,7 @@ $query->bindParam(':book_id',$book_id,PDO::PARAM_STR);
 $query->execute();
 $_SESSION['msg']="Book info updated successfully";
 header('location:manage-books.php');
-
-
+exit;
 }
 ?>
 <!DOCTYPE html>
@@ -85,7 +92,7 @@ Book Info
 <form role="form" method="post">
 <?php 
 $book_id=intval($_GET['book_id']);
-$sql = "SELECT title, author1, acc_number, publication, place_of_publication, cost, year_of_publication, isbn from tb_books where book_id =:book_id";
+$sql = "SELECT title, author1, acc_number, publication, place_of_publication, cost, year_of_publication, isbn, department from tb_books where book_id =:book_id";
 $query = $dbh -> prepare($sql);
 $query->bindParam(':book_id',$book_id,PDO::PARAM_STR);
 $query->execute();
@@ -131,6 +138,27 @@ foreach($results as $result)
 <label>Price<span style="color:red;">*</span></label>
 <input class="form-control" type="text" name="cost" value="<?php echo htmlentities($result->cost);?>" autocomplete="off"  required />
 </div>
+
+<div class="form-group">
+<label>Department</label>
+<?php $sql = "SELECT * from tb_departments";
+$query = $dbh -> prepare($sql);
+$query->execute();
+$dresults=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if($query->rowCount() > 0)
+{ ?>
+<select name="department">
+<option value="">--Select--</option>
+<?php
+foreach($dresults as $dresult)
+{      ?>
+<option value="<?php echo $dresult->name; ?>" <?php if($dresult->name == $result->department) { ?>selected <?php } ?> ><?php echo $dresult->name; ?></option>
+<?php } ?>
+</select>
+<?php } ?>
+</div>
+
 
  <?php }} ?>
 <button type="submit" name="update" class="btn btn-info">Update </button>

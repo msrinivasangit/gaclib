@@ -41,49 +41,8 @@ else{?>
                             </div>
 
         </div>
+<?php include('includes/carousel.php');?>
 
-
-             <div class="row">
-
-              <!-- <div class="col-md-10 col-sm-8 col-xs-12 col-md-offset-1">
-                    <div id="carousel-example" class="carousel slide slide-bdr" data-ride="carousel" >
-                   
-                    <div class="carousel-inner">
-                        <div class="item active">
-
-                            <img src="assets/img/1.jpg" alt="" />
-                           
-                        </div>
-                        <div class="item">
-                            <img src="assets/img/2.jpg" alt="" />
-                          
-                        </div>
-                        <div class="item">
-                            <img src="assets/img/3.jpg" alt="" />
-                           
-                        </div>
-                    </div>
-                   
-                     <ol class="carousel-indicators">
-                        <li data-target="#carousel-example" data-slide-to="0" class="active"></li>
-                        <li data-target="#carousel-example" data-slide-to="1"></li>
-                        <li data-target="#carousel-example" data-slide-to="2"></li>
-                    </ol>
-                   
-                     <a class="left carousel-control" href="#carousel-example" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left"></span>
-  </a>
-  <a class="right carousel-control" href="#carousel-example" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right"></span>
-  </a>
-                </div>
-              </div> -->
-                 
-               
-             
-               
-            
-             </div>             
              <div class="row">
 
  <div class="col-md-3 col-sm-3 col-xs-6">
@@ -95,6 +54,7 @@ $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 $listdbooks=$query->rowCount();
+$listdbooks=9678;
 ?>
 
 
@@ -218,7 +178,7 @@ $listdcats=$query5->rowCount();
             
     </div>
     </div>
-     <!-- CONTENT-WRAPPER SECTION END-->
+     <!-- CONTENT-WRAPPER SECTION END
 <?php include('includes/footer.php');?>
       <!-- FOOTER SECTION END-->
     <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->

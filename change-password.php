@@ -12,20 +12,17 @@ if(isset($_POST['change']))
 $password=md5($_POST['password']);
 $newpassword=md5($_POST['newpassword']);
 $username=$_SESSION['alogin'];
-  $sql ="SELECT Password FROM admin where UserName=:username and Password=:password";
+$sql ="SELECT member_id from  tb_members where member_id=:username";
 $query= $dbh -> prepare($sql);
 $query-> bindParam(':username', $username, PDO::PARAM_STR);
-$query-> bindParam(':password', $password, PDO::PARAM_STR);
 $query-> execute();
 $results = $query -> fetchAll(PDO::FETCH_OBJ);
 if($query -> rowCount() > 0)
 {
-$con="update admin set Password=:newpassword where UserName=:username";
+$con="update tb_members set password='".$newpassword."' where member_id=".$username;
 $chngpwd1 = $dbh->prepare($con);
-$chngpwd1-> bindParam(':username', $username, PDO::PARAM_STR);
-$chngpwd1-> bindParam(':newpassword', $newpassword, PDO::PARAM_STR);
 $chngpwd1->execute();
-$msg="Your Password succesfully changed";
+$msg="Your Password succesfully changed, Logout and Login with Your New Password ";
 }
 else {
 $error="Your current password is wrong";  
@@ -105,11 +102,6 @@ Change Password
 <form role="form" method="post" onSubmit="return valid();" name="chngpwd">
 
 <div class="form-group">
-<label>Current Password</label>
-<input class="form-control" type="password" name="password" autocomplete="off" required  />
-</div>
-
-<div class="form-group">
 <label>Enter Password</label>
 <input class="form-control" type="password" name="newpassword" autocomplete="off" required  />
 </div>
@@ -119,7 +111,7 @@ Change Password
 <input class="form-control"  type="password" name="confirmpassword" autocomplete="off" required  />
 </div>
 
- <button type="submit" name="change" class="btn btn-info">Chnage </button> 
+ <button type="submit" name="change" class="btn btn-info">Change </button> 
 </form>
  </div>
 </div>

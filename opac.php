@@ -48,6 +48,7 @@ if(count($wheres)){
 <body>
       <!------MENU SECTION START-->
 <?php include('includes/header.php');?>
+<center><div style="font-size: 28px;font-weight: bold;">OPAC <br/>(ONLINE PUBLIC ACCESS CATALOG)</div> </center>
 <!-- MENU SECTION END-->
     <div class="content-wrapper">
          <div class="container">

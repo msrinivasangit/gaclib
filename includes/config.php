@@ -4,6 +4,12 @@ define('DB_HOST','localhost');
 define('DB_USER','root');
 define('DB_PASS','admin');
 define('DB_NAME','digital_library');
+
+// define('DB_HOST','localhost');
+// define('DB_USER','findmntr_gac');
+// define('DB_PASS','gaclib');
+// define('DB_NAME','findmntr_gaclib');
+// define('DB_NAME','findmntr_gacs7');
 // Establish database connection.
 try
 {

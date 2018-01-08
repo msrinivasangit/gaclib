@@ -10,27 +10,19 @@ else{
 
 if(isset($_POST['add']))
 {
-$title=$_POST['title'];
-$author1=$_POST['author1'];
-$acc_number=$_POST['acc_number'];
-$publication=$_POST['publication'];
-$place_of_publication=$_POST['place_of_publication'];
+$title=addslashes($_POST['title']);
+$author1=addslashes($_POST['author1']);
+$acc_number=addslashes($_POST['acc_number']);
+$publication=addslashes($_POST['publication']);
+$place_of_publication=addslashes($_POST['place_of_publication']);
 $year_of_publication=$_POST['year_of_publication'];
+$department = $_POST['department'];
 $cost=$_POST['cost'];
 $isbn='0';
 
+$sql="INSERT Ignore tb_books (book_id, title, subtitle, author1, publication, isbn, edition, place_of_publication, year_of_publication, number_of_pages, cost, acc_number, call_number, category, department, subject, dept_transfer_status, photo, author2, author3, created_at, modified_at, status, book_available_status) VALUES (NULL, '".$title."', '', '".$author1."', '".$publication."', '', '', '".$place_of_publication."', '".$year_of_publication."', '', '".$cost."', '".$acc_number."', '', '', '".$department."', '', '0', '', '', '', now(), CURRENT_TIMESTAMP, '1', '1')";
 
-$sql1="INSERT Ignore tb_books (book_id, title, subtitle, author1, publication, isbn, edition, place_of_publication, year_of_publication, number_of_pages, cost, acc_number, call_number, category, department, subject, dept_transfer_status, photo, author2, author3, created_at, modified_at, status, book_available_status) VALUES (NULL, :title, '', :author1, :publication, '', '', :place_of_publication, :year_of_publication, '', :cost, :acc_number, '', '', '', '', '0', '', '', '', now(), CURRENT_TIMESTAMP, '1', '1')";
-$sql="INSERT Ignore tb_books (book_id, title, subtitle, author1, publication, isbn, edition, place_of_publication, year_of_publication, number_of_pages, cost, acc_number, call_number, category, department, subject, dept_transfer_status, photo, author2, author3, created_at, modified_at, status, book_available_status) VALUES (NULL, '".$title."', '', '".$author1."', '".$publication."', '', '', '".$place_of_publication."', '".$year_of_publication."', '', '".$cost."', '".$acc_number."', '', '', '', '', '0', '', '', '', now(), CURRENT_TIMESTAMP, '1', '1')";
 $query = $dbh->prepare($sql);
-$query->bindParam(':title',$title,PDO::PARAM_STR);
-$query->bindParam(':author1',$author1,PDO::PARAM_STR);
-$query->bindParam(':acc_number',$acc_number,PDO::PARAM_STR);
-$query->bindParam(':cost',$cost,PDO::PARAM_STR);
-$query->bindParam(':publication',$publication,PDO::PARAM_STR);
-$query->bindParam(':place_of_publication',$place_of_publication,PDO::PARAM_STR);
-$query->bindParam(':year_of_publication',$year_of_publication,PDO::PARAM_STR);
-$query->bindParam(':isbn',$isbn,PDO::PARAM_STR);
 $query->execute();
 
 $lastInsertId = $dbh->lastInsertId();
@@ -40,12 +32,12 @@ $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)
 {
 $_SESSION['msg']="Book Listed successfully";
-header('location:manage-books.php');
+header('location:add-book.php?msg='.$_SESSION['msg']);
 }
 else 
 {
 $_SESSION['error']="Something went wrong. Please try again";
-header('location:manage-books.php');
+header('location:add-book.php?msg='.$_SESSION['error']);
 }
 
 }
@@ -80,6 +72,56 @@ header('location:manage-books.php');
                 <h4 class="header-line">Add Book</h4>
                 
                             </div>
+
+</div>
+<div class="row">
+    <?php 
+    if(isset($_GET['msg'])){
+        $_SESSION['msg']=$_GET['msg'];
+    }
+    if($_SESSION['error']!="")
+    {?>
+<div class="col-md-6">
+<div class="alert alert-danger" >
+ <strong>Error :</strong> 
+ <?php echo htmlentities($_SESSION['error']);?>
+<?php echo htmlentities($_SESSION['error']="");?>
+</div>
+</div>
+<?php } ?>
+<?php if($_SESSION['msg']!="")
+{?>
+<div class="col-md-6">
+<div class="alert alert-success" >
+ <strong>Success :</strong> 
+ <?php echo htmlentities($_SESSION['msg']);?>
+<?php echo htmlentities($_SESSION['msg']="");?>
+</div>
+</div>
+<?php } ?>
+<?php if($_SESSION['updatemsg']!="")
+{?>
+<div class="col-md-6">
+<div class="alert alert-success" >
+ <strong>Success :</strong> 
+ <?php echo htmlentities($_SESSION['updatemsg']);?>
+<?php echo htmlentities($_SESSION['updatemsg']="");?>
+</div>
+</div>
+<?php } ?>
+
+
+   <?php 
+   if($_SESSION['delmsg']!="")
+    {?>
+<div class="col-md-6">
+<div class="alert alert-success" >
+ <strong>Success :</strong> 
+ <?php echo htmlentities($_SESSION['delmsg']);?>
+<?php echo htmlentities($_SESSION['delmsg']="");?>
+</div>
+</div>
+<?php } ?>
 
 </div>
 <div class="row">
@@ -124,6 +166,27 @@ Book Info
 <div class="form-group">
 <label>Price<span style="color:red;">*</span></label>
 <input class="form-control" type="text" name="cost" autocomplete="off"  required />
+</div>
+
+
+<div class="form-group">
+<label>Department</label>
+<?php $sql = "SELECT * from tb_departments";
+$query = $dbh -> prepare($sql);
+$query->execute();
+$dresults=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if($query->rowCount() > 0)
+{ ?>
+<select name="department">
+<option value="">--Select--</option>
+<?php
+foreach($dresults as $dresult)
+{      ?>
+<option value="<?php echo $dresult->name; ?>" <?php if($dresult->name == $result->department) { ?>selected <?php } ?> ><?php echo $dresult->name; ?></option>
+<?php } ?>
+</select>
+<?php } ?>
 </div>
 
 <button type="submit" name="add" class="btn btn-info">Add </button>
